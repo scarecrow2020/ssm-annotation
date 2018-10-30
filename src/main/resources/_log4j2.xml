@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 设置log4j2的自身log打印级别，默认OFF -->
+<!-- All:最低等级的，用于打开所有日志记录.
+    Trace:是追踪，就是程序推进一下，你就可以写个trace输出，所以trace应该会特别多.
+    Debug:指出细粒度信息事件对调试应用程序是非常有帮助的.
+    Info:消息在粗粒度级别上突出强调应用程序的运行过程.
+    Warn:输出警告及warn以下级别的日志.
+    Error:输出错误信息日志.
+    Fatal:输出每个严重的错误事件将会导致应用程序的退出的日志.
+    OFF:最高等级的，用于关闭所有日志记录. -->
+<!-- monitorinterval 用于指定log4j自动重新配置的监测间隔时间，单位是s,最小是5s.（如果更改配置文件，不用重启系统）-->
+<Configuration status="WARN" monitorinterval="30">
+    <!--<Properties>
+        <Property name="logdir">${sys:catalina.base}/logs</Property>
+    </Properties>-->
+    <!--转换模式%m 输出代码中指定的消息
+        %p 输出优先级，即DEBUG,INFO,WARN,ERROR,FATAL
+        %r 输出自应用启动到输出该log信息耗费的毫秒数
+        %c 输出所属的类目,通常就是所在类的全名
+        %t 输出产生该日志事件的线程名
+        %n 输出一个回车换行符，Windows平台为“\r\n”，Unix平台为“\n”
+        %d 输出日志时间点的日期或时间，默认格式为ISO8601，也可以在其后指定格式
+            如：%d{dd MMM yyyy HH:mm:ss,SSS}，输出类似：02 Nov 2012 14:34:02,781
+        %l 输出日志事件的发生位置，包括类目名、发生的线程，以及在代码中的行数
+            如：Testlog.main(TestLog.java:10)
+        %F 输出日志消息产生时所在的文件名称
+        %L 输出代码中的行号
+        %x 输出和当前线程相关联的NDC(嵌套诊断环境),像java servlets多客户多线程的应用中
+        %% 输出一个"%"字符-->
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!--输出格式，不设置默认为:%m%n -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>
+
+        <!--<RollingFile name="RollingFileDebug" fileName="${web:rootDir}/logs/debug.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/debug-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="DEBUG"/>
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20" min="0" />
+        </RollingFile>-->
+        <!-- 打印出所有的info及以下级别的信息，每次大小超过size，
+                    则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <!--<RollingFile name="RollingFileInfo" fileName="${web:rootDir}/logs/info.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                &lt;!&ndash;控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）&ndash;&gt;
+                <ThresholdFilter level="INFO"/>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                &lt;!&ndash;基于时间的滚动策略，interval属性用来指定多久滚动一次，默认是1 hour。
+                    modulate=true用来调整时间：比如现在是早上3am，interval是4，
+                    那么第一次滚动是在4am，接着是8am，12am...而不是7am&ndash;&gt;
+                <TimeBasedTriggeringPolicy/>
+                &lt;!&ndash;基于指定文件大小的滚动策略，size属性用来定义每个日志文件的大小&ndash;&gt;
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            &lt;!&ndash;最多保留20个日志文件&ndash;&gt;
+            <DefaultRolloverStrategy max="20" min="0" />
+        </RollingFile>-->
+
+        <!--<RollingFile name="RollingFileWarn" fileName="${web:rootDir}/logs/warn.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="WARN"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20" min="0" />
+        </RollingFile>-->
+
+        <!--<RollingFile name="RollingFileError" fileName="${web:rootDir}/logs/error.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20" min="0" />
+        </RollingFile>-->
+
+        <!--<RollingFile name="RollingFileFatal" fileName="${web:rootDir}/logs/fatal.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/fatal-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="FATAL"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="20" min="0" />
+        </RollingFile>-->
+        <!--druid的日志记录追加器-->
+        <!--<RollingFile name="druidSqlRollingFile" fileName="${web:rootDir}/logs/druid-sql.log"
+                     filePattern="${web:rootDir}/logs/$${date:yyyy-MM}/api-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] %-5level %L %M - %msg%xEx%n"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingFile>-->
+    </Appenders>
+    <!-- 只有定义了logger并引入的appender，appender才会生效-->
+    <Loggers>
+        <!--过滤掉一些无用的DEBUG信息-->
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="com.baomidou" level="INFO"></logger>
+
+        <Root level="Debug">
+            <appender-ref ref="Console"/>
+            <!--输出到磁盘-->
+            <!--<appender-ref ref="RollingFileDebug"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+            <appender-ref ref="RollingFileFatal"/>-->
+        </Root>
+        <!-- druid配置，输出到磁盘appender-ref标签中的ref="druidSqlRollingFile" -->
+        <!--<logger name="druid.sql.Statement" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>
+        <logger name="druid.sql.ResultSet" level="debug" additivity="false">
+            <appender-ref ref="Console"/>
+        </logger>-->
+    </Loggers>
+</Configuration>

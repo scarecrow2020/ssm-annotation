@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzy.mapper.UserMapper">
+    <select id="findUsers" resultType="com.lzy.model.User">
+      select * from user
+    </select>
+
+    <insert id="batchInsert">
+        insert into user
+          (name, age, birthday, card_code, create_date, operate_date, operate_user_id)
+        values
+        <foreach collection="list" item="user" separator=",">
+            (#{user.name}, #{user.age},#{user.birthday}, #{user.cardCode}, #{user.createDate}, #{user.operateDate}, #{user.operateUserId})
+        </foreach>
+    </insert>
+</mapper>
